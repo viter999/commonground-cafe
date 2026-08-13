@@ -297,7 +297,12 @@
             <div style="fontSize:17px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textTransform:uppercase;">Enter your name</div>
             <input value="{{ initials }}" onChange="{{ onInitialsChange }}" maxLength="16" style="fontFamily:'Press Start 2P',monospace; fontSize:13px; textAlign:center; letterSpacing:1px; width:270px; padding:8px; borderRadius:0; border:3px solid #5E244E; textTransform:uppercase;"/>
             <button onClick="{{ submitScore }}" style="fontFamily:'VT323',monospace; fontSize:23px; padding:9px 22px; borderRadius:0; border:3px solid #5E244E; background:#AA1C41; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; boxShadow:3px 3px 0 #5E244E; textTransform:uppercase;">{{ submitLabel }}</button>
+            <div style="fontSize:15px; color:#A8788F; textShadow:none; textAlign:center; lineHeight:1.3;">Saved automatically from now on<br/>on this phone</div>
           </div>
+        </sc-if>
+
+        <sc-if value="{{ showSaveStatus }}" hint-placeholder-val="{{ false }}">
+          <div style="textAlign:center; fontFamily:'VT323',monospace; fontSize:21px; letterSpacing:1px; color:{{ saveStatusColor }}; textShadow:none; padding:6px 0;">{{ saveStatusText }}</div>
         </sc-if>
 
         <div style="display:flex; gap:10px; marginTop:6px;">
@@ -424,6 +429,18 @@ class Component extends DCLogic {
     });
   }
 
+  // The phone remembers who is playing, so only the first run on a device ever
+  // needs a name typed. Every run after that saves with no taps at all.
+  nameKey = 'commonground_player_name';
+
+  _loadName() {
+    try { return localStorage.getItem(this.nameKey) || ''; } catch (e) { return ''; }
+  }
+
+  _rememberName(n) {
+    try { localStorage.setItem(this.nameKey, n); } catch (e) {}
+  }
+
   _loadScores() {
     try { return JSON.parse(localStorage.getItem(this.storageKey)) || []; } catch (e) { return []; }
   }
@@ -442,7 +459,7 @@ class Component extends DCLogic {
     tutStep: 0, tutCup: [],
     elapsed: 0, customers: [], cup: [],
     score: 0, streak: 0, maxStreak: 0, nextCustomerId: 1, lastSpawn: 0,
-    toast: null, finished: false, initials: '', submitted: false,
+    toast: null, finished: false, initials: this._loadName(), submitted: false,
     brewing: null, brewProgress: 0,
     gameMode: 'shift', lives: 3, event: null, eventNextAt: 0, vipAt: 60, vipSpawned: false,
     leaving: null, leavingUntil: 0, toastUntil: 0, savedBoard: null,
@@ -510,7 +527,7 @@ class Component extends DCLogic {
   }
 
   goTo(screen) { this.setState({ screen }); }
-  goTitle() { this._stopTimer(); this._clearBrew(); this.setState({ screen: 'title', toast: null, leaving: null }); }
+  goTitle() { this._flushScore(); this._stopTimer(); this._clearBrew(); this.setState({ screen: 'title', toast: null, leaving: null }); }
   viewHighScores() { this.setState({ screen: 'results', boardOnly: true, toast: null }); this._refreshBoard(); }
 
   startTutorial() { this._clearBrew(); this.setState({ screen: 'tutorial', tutStep: 0, tutCup: [], toast: null }); }
@@ -522,7 +539,7 @@ class Component extends DCLogic {
     this.setState({
       screen: 'play', gameMode: mode, boardOnly: false, elapsed: 0, customers: [], cup: [],
       score: 0, streak: 0, maxStreak: 0, nextCustomerId: 1, lastSpawn: -10,
-      toast: null, finished: false, initials: '', submitted: false, submitting: false,
+      toast: null, finished: false, initials: this._loadName(), submitted: false, submitting: false,
       lives: mode === 'endless' ? 3 : 4, event: null, eventNextAt: 18 + Math.random() * 12,
       vipAt: 25 + Math.random() * 35, vipSpawned: false,
     }, () => {
@@ -643,7 +660,7 @@ class Component extends DCLogic {
       return { elapsed, customers, score, streak, maxStreak: Math.max(s.maxStreak, streak), cup, toast, nextCustomerId, lastSpawn, finished, lives, event, eventNextAt, vipSpawned, leaving, leavingUntil, toastUntil };
     }, () => {
       if (this._pendingWalkoutSfx) { this._pendingWalkoutSfx = false; this._sfx('walkout'); }
-      if (this.state.finished) { this._stopTimer(); this._clearBrew(); this._sfx('over'); this.setState({ screen: 'results', toast: null, leaving: null }); this._refreshBoard(); }
+      if (this.state.finished) { this._stopTimer(); this._clearBrew(); this._sfx('over'); this.setState({ screen: 'results', toast: null, leaving: null }); this._refreshBoard(); this._autoSubmit(); }
     });
   }
 
@@ -745,10 +762,27 @@ class Component extends DCLogic {
   }
 
   setInitials(v) { this.setState({ initials: v.toUpperCase().slice(0, 16) }); }
+  // Fires the instant a run ends when this phone already knows its player.
+  // Without it a run was lost outright if nobody spotted the Save button.
+  _autoSubmit() {
+    const known = this._loadName();
+    if (!known) return;
+    this.setState({ initials: known }, () => this.submitScore());
+  }
+
+  // Leaving the results screen must never silently bin a run. Anyone who typed
+  // a name and then tapped Play Again instead of Save still gets recorded.
+  _flushScore() {
+    const s = this.state;
+    if (s.screen !== 'results' || s.boardOnly || s.submitted || s.submitting) return;
+    this.submitScore();
+  }
+
   submitScore() {
     const s = this.state;
     if (s.submitting || s.submitted) return;
-    const name = (s.initials || 'YOU').toUpperCase().slice(0, 16);
+    const name = (s.initials || 'PLAYER').toUpperCase().slice(0, 16);
+    this._rememberName(name);
     const entry = { name, score: s.score, streak: s.maxStreak, mode: s.gameMode };
     // Save on the phone first. That part cannot fail, so the score is never lost
     // to a bad connection — the shared board is a best effort on top of it.
@@ -770,7 +804,7 @@ class Component extends DCLogic {
   }
   openSettings() { this.setState({ settingsOpen: true }); }
   closeSettings() { this.setState({ settingsOpen: false }); }
-  playAgain() { this.startPlay(this.state.gameMode); }
+  playAgain() { this._flushScore(); this.startPlay(this.state.gameMode); }
 
   renderVals() {
     const s = this.state;
@@ -867,7 +901,12 @@ class Component extends DCLogic {
       board, hasBoard: board.length > 0, emptyBoard: board.length === 0,
       showInitialsForm: !s.boardOnly && !s.submitted,
       initials: s.initials, onInitialsChange: e => this.setInitials(e.target.value), submitScore: () => this.submitScore(),
-      submitLabel: s.submitting ? 'Saving…' : 'Save Score',
+      submitLabel: s.submitting ? 'Saving…' : 'Save to cafe board',
+      showSaveStatus: !s.boardOnly && s.submitted,
+      saveStatusText: s.submitting ? 'Saving to the cafe board…'
+        : s.boardOffline ? '✓ Saved on this phone — cafe board unreachable'
+        : '✓ Saved to the cafe board',
+      saveStatusColor: s.submitting ? '#A8788F' : s.boardOffline ? '#FF9AA8' : '#7FBF6A',
       boardScopeLabel: !this._remoteOn() ? 'This phone only'
         : s.boardLoading ? 'Loading cafe board…'
         : s.remoteBoard ? '☕ Cafe leaderboard — everyone who plays'
