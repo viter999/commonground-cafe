@@ -359,9 +359,14 @@ class Component extends DCLogic {
   // The shared cafe leaderboard. With url/key left empty the game runs exactly
   // as it did before — scores stay on the phone. Nothing here may ever throw:
   // a player mid-shift on bad wifi must still finish and still see a board.
+  // The key below is Supabase's *publishable* key and is meant to ship in
+  // client code — it grants only what the table's policies allow, which here is
+  // read and insert. Update and delete have no policy, so a visitor cannot
+  // touch anyone else's row. Score and name limits are enforced by CHECK
+  // constraints in the database, not here, where they could just be edited out.
   leaderboard = {
-    url: '',
-    key: '',
+    url: 'https://biaexyfgjogvqgjsvjgx.supabase.co',
+    key: 'sb_publishable_fOko4rnKNtGrrXa2GeqCFA_Sjq_S4lp',
     table: 'scores',
   };
 
