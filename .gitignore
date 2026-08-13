@@ -1,0 +1,10 @@
+# image-slot writes a sidecar next to the page when filled in the editor
+.image-slots.state.json
+
+# local notes, not part of the site
+UPLOAD-STEPS.md
+
+# OS cruft
+Thumbs.db
+desktop.ini
+.DS_Store

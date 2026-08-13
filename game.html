@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <script src="./image-slot.js"></script>
+  <meta name="ext-resource-dependency" content="assets/bgm.mp3"/>
+  <meta name="ext-resource-dependency" content="assets/barista.png"/>
+  <meta name="ext-resource-dependency" content="assets/cafe-wall.png"/>
+  <meta name="ext-resource-dependency" content="assets/bar-counter.png"/>
+  <meta name="ext-resource-dependency" content="assets/customer_1.png"/>
+  <meta name="ext-resource-dependency" content="assets/customer_2.png"/>
+  <meta name="ext-resource-dependency" content="assets/customer_3.png"/>
+  <meta name="ext-resource-dependency" content="assets/customer_4.png"/>
+  <meta name="ext-resource-dependency" content="assets/customer_5.png"/>
+  <meta name="ext-resource-dependency" content="assets/customer_6.png"/>
+  <meta name="ext-resource-dependency" content="assets/customer_7.png"/>
+  <meta name="ext-resource-dependency" content="assets/customer_8.png"/>
+  <meta name="ext-resource-dependency" content="assets/customer_9.png"/>
+  <meta name="ext-resource-dependency" content="assets/customer_10.png"/>
+  <meta name="ext-resource-dependency" content="assets/customer_VIP.png"/>
+  <meta name="ext-resource-dependency" content="assets/ing-ice.png"/>
+  <meta name="ext-resource-dependency" content="assets/ing-espresso.png"/>
+  <meta name="ext-resource-dependency" content="assets/ing-water.png"/>
+  <meta name="ext-resource-dependency" content="assets/ing-milk.png"/>
+  <meta name="ext-resource-dependency" content="assets/ing-orange.png"/>
+  <meta name="ext-resource-dependency" content="assets/ing-coconut.png"/>
+  <meta name="ext-resource-dependency" content="assets/ing-cocoa.png"/>
+  <meta name="ext-resource-dependency" content="assets/ing-matcha.png"/>
+  <meta name="ext-resource-dependency" content="assets/ing-thaitea.png"/>
+  <meta name="ext-resource-dependency" content="assets/drink-americano.png"/>
+  <meta name="ext-resource-dependency" content="assets/drink-latte.png"/>
+  <meta name="ext-resource-dependency" content="assets/drink-mocha.png"/>
+  <meta name="ext-resource-dependency" content="assets/drink-black-orange.png"/>
+  <meta name="ext-resource-dependency" content="assets/drink-black-coconut.png"/>
+  <meta name="ext-resource-dependency" content="assets/drink-matcha.png"/>
+  <meta name="ext-resource-dependency" content="assets/drink-thaitea.png"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <style>
+    html, body { margin: 0; height: 100%; overscroll-behavior: none; background: #5C0827; }
+    body { -webkit-text-size-adjust: 100%; -webkit-tap-highlight-color: transparent; }
+    body, body * { -webkit-user-select: none; user-select: none; touch-action: manipulation; }
+    input { -webkit-user-select: text; user-select: text; }
+    button { -webkit-appearance: none; appearance: none; font: inherit; }
+    img, [style*="background-image"] { image-rendering: pixelated; image-rendering: -webkit-optimize-contrast; }
+    image-slot, image-slot img { image-rendering: pixelated; }
+    body, body * { -webkit-font-smoothing: none; -moz-osx-font-smoothing: unset; font-smooth: never; text-rendering: geometricPrecision; }
+    @keyframes pulseGlow { 0%,49% { box-shadow: 0 0 0 4px #E68457; } 50%,100% { box-shadow: 0 0 0 4px transparent; } }
+    @keyframes toastIn { from { opacity: 0; transform: translate(-50%,-10px); } to { opacity: 1; transform: translate(-50%,0); } }
+    @keyframes walkInA { from { transform: translateX(130px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes walkInB { from { transform: translateX(130px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes walkOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(140px); opacity: 0; } }
+    @keyframes baristaIdle { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+    @keyframes baristaWork { 0% { transform: translateY(0) translateX(0); } 25% { transform: translateY(-5px) translateX(-2px); } 50% { transform: translateY(0) translateX(2px); } 75% { transform: translateY(-4px) translateX(0); } 100% { transform: translateY(0); } }
+    @keyframes rushFlicker { 0%,100% { transform: scale(1); color: #E68457; text-shadow: 2px 2px 0 #AA1C41; } 50% { transform: scale(1.07); color: #FFD27A; text-shadow: 2px 2px 0 #E68457; } }
+    @keyframes steamRise { from { transform: translateY(0) scale(0.8); opacity: 0.95; } to { transform: translateY(-26px) scale(1.1); opacity: 0; } }
+  </style>
+</helmet>
+<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#5E244E"/><rect x="34" y="30" width="26" height="30" fill="#FFE8B4"/><rect x="60" y="36" width="8" height="12" fill="#E68457"/><rect x="30" y="64" width="40" height="6" fill="#AA1C41"/></svg></template>
+<div style="display:flex; justifyContent:center; alignItems:stretch; minHeight:100vh; background:#5C0827; fontFamily:'VT323',monospace;">
+  <div id="__preload" style="position:absolute; width:0; height:0; overflow:hidden; opacity:0; pointerEvents:none;">
+    <img data-key="assets/ing-ice.png" src="assets/ing-ice.png" alt=""/>
+    <img data-key="assets/ing-espresso.png" src="assets/ing-espresso.png" alt=""/>
+    <img data-key="assets/ing-water.png" src="assets/ing-water.png" alt=""/>
+    <img data-key="assets/ing-milk.png" src="assets/ing-milk.png" alt=""/>
+    <img data-key="assets/ing-orange.png" src="assets/ing-orange.png" alt=""/>
+    <img data-key="assets/ing-coconut.png" src="assets/ing-coconut.png" alt=""/>
+    <img data-key="assets/ing-cocoa.png" src="assets/ing-cocoa.png" alt=""/>
+    <img data-key="assets/ing-matcha.png" src="assets/ing-matcha.png" alt=""/>
+    <img data-key="assets/ing-thaitea.png" src="assets/ing-thaitea.png" alt=""/>
+    <img data-key="assets/drink-americano.png" src="assets/drink-americano.png" alt=""/>
+    <img data-key="assets/drink-latte.png" src="assets/drink-latte.png" alt=""/>
+    <img data-key="assets/drink-mocha.png" src="assets/drink-mocha.png" alt=""/>
+    <img data-key="assets/drink-black-orange.png" src="assets/drink-black-orange.png" alt=""/>
+    <img data-key="assets/drink-black-coconut.png" src="assets/drink-black-coconut.png" alt=""/>
+    <img data-key="assets/drink-matcha.png" src="assets/drink-matcha.png" alt=""/>
+    <img data-key="assets/drink-thaitea.png" src="assets/drink-thaitea.png" alt=""/>
+    <img data-key="assets/customer_1.png" src="assets/customer_1.png" alt=""/>
+    <img data-key="assets/customer_2.png" src="assets/customer_2.png" alt=""/>
+    <img data-key="assets/customer_3.png" src="assets/customer_3.png" alt=""/>
+    <img data-key="assets/customer_4.png" src="assets/customer_4.png" alt=""/>
+    <img data-key="assets/customer_5.png" src="assets/customer_5.png" alt=""/>
+    <img data-key="assets/customer_6.png" src="assets/customer_6.png" alt=""/>
+    <img data-key="assets/customer_7.png" src="assets/customer_7.png" alt=""/>
+    <img data-key="assets/customer_8.png" src="assets/customer_8.png" alt=""/>
+    <img data-key="assets/customer_9.png" src="assets/customer_9.png" alt=""/>
+    <img data-key="assets/customer_10.png" src="assets/customer_10.png" alt=""/>
+    <img data-key="assets/customer_VIP.png" src="assets/customer_VIP.png" alt=""/>
+    <audio id="__bgm" src="assets/bgm.mp3" loop="loop" preload="auto"></audio>
+  </div>
+
+  <div style="width:100%; maxWidth:520px; minHeight:100dvh; paddingBottom:env(safe-area-inset-bottom); background:#810B38; display:flex; flexDirection:column; position:relative; overflowY:auto; overflowX:hidden; fontFamily:'VT323',monospace; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; boxSizing:border-box; imageRendering:pixelated; WebkitFontSmoothing:none;">
+
+    <sc-if value="{{isTitle}}" hint-placeholder-val="{{ true }}">
+      <div style="flex:1; display:flex; flexDirection:column; alignItems:center; justifyContent:center; gap:22px; padding:24px; boxSizing:border-box;">
+<div style="width:144px; height:144px; background:#FFF6DC; border:4px solid #5E244E; boxShadow:6px 6px 0 #5E244E;">
+          <image-slot id="mascot" shape="rect" placeholder="Mascot" style="width:100%; height:100%;"></image-slot>
+        </div>
+        <div style="textAlign:center;">
+          <div style="fontFamily:'Press Start 2P',monospace; fontWeight:400; fontSize:clamp(22px, 7.2vw, 40px); lineHeight:1.18; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; marginBottom:14px;">COMMONGROUND<br/>ROASTERY<br/>CAFE</div>
+          <div style="fontFamily:'VT323',monospace; fontSize:20px; color:#FF9AA8; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; letterSpacing:1px;">MA TAM KA FAE GUN TER</div>
+        </div>
+        <div style="display:flex; flexDirection:column; gap:12px; width:100%; maxWidth:280px; marginTop:8px;">
+          <button onClick="{{ startTutorial }}" style="fontFamily:'VT323',monospace; fontWeight:400; fontSize:25px; letterSpacing:1px; padding:12px; borderRadius:0; border:3px solid #5E244E; background:#FFF6DC; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; boxShadow:4px 4px 0 #5E244E; textTransform:uppercase;">📖 Tutorial</button>
+          <button onClick="{{ startPlay }}" style="fontFamily:'VT323',monospace; fontWeight:400; fontSize:28px; letterSpacing:1px; padding:13px; borderRadius:0; border:3px solid #5E244E; background:#AA1C41; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; boxShadow:4px 4px 0 #5E244E; textTransform:uppercase;">🎮 Normal Mode</button>
+          <button onClick="{{ startEndless }}" style="fontFamily:'VT323',monospace; fontWeight:400; fontSize:25px; letterSpacing:1px; padding:12px; borderRadius:0; border:3px solid #5E244E; background:#E68457; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; boxShadow:4px 4px 0 #5E244E; textTransform:uppercase;">🔥 Unlimited</button>
+          <div style="display:flex; gap:12px;">
+            <button onClick="{{ viewHighScores }}" style="flex:1; fontFamily:'VT323',monospace; fontWeight:400; fontSize:21px; padding:10px; borderRadius:0; border:3px solid #5E244E; background:transparent; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; boxShadow:3px 3px 0 #5E244E; textTransform:uppercase;">🏆 Scores</button>
+            <button onClick="{{ openSettings }}" style="flex:1; fontFamily:'VT323',monospace; fontWeight:400; fontSize:21px; padding:10px; borderRadius:0; border:3px solid #5E244E; background:transparent; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; boxShadow:3px 3px 0 #5E244E; textTransform:uppercase;">⚙️ Settings</button>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isTutorial}}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1; display:flex; flexDirection:column; padding:20px; boxSizing:border-box; gap:16px;">
+        <div style="display:flex; alignItems:center; gap:10px;">
+          <button onClick="{{ goTitle }}" style="border:none; background:none; fontSize:28px; cursor:pointer; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A;">←</button>
+          <div style="fontFamily:'Press Start 2P',monospace; fontSize:15px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A;">TUTORIAL</div>
+        </div>
+
+        <sc-if value="{{tutDone}}" hint-placeholder-val="{{ false }}">
+          <div style="flex:1; display:flex; flexDirection:column; alignItems:center; justifyContent:center; gap:16px; textAlign:center;">
+            <div style="fontSize:51px;">🎉</div>
+            <div style="fontFamily:'Press Start 2P',monospace; fontSize:16px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; lineHeight:1.6;">TUTORIAL<br/>COMPLETE!</div>
+            <div style="fontSize:22px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A;">You know Americano &amp; Latte. Time for the real shift.</div>
+            <button onClick="{{ startPlay }}" style="fontFamily:'VT323',monospace; fontSize:25px; padding:12px 26px; borderRadius:0; border:3px solid #5E244E; background:#AA1C41; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; boxShadow:4px 4px 0 #5E244E; textTransform:uppercase;">Start Full Shift</button>
+            <button onClick="{{ goTitle }}" style="fontFamily:'VT323',monospace; fontSize:21px; padding:9px 18px; borderRadius:0; border:3px solid #5E244E; background:transparent; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; textTransform:uppercase;">Back to Title</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{tutActive}}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex; flexDirection:column; alignItems:center; gap:10px; background:#FFF6DC; border:3px solid #5E244E; padding:16px;">
+            <div style="fontSize:16px; color:#FF9AA8; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; fontFamily:'VT323',monospace; letterSpacing:1px;">MAKE A</div>
+            <div style="display:flex; alignItems:center; gap:8px; lineHeight:1; fontSize:25px; fontFamily:'VT323',monospace; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textTransform:uppercase;"><div style="width:42px; height:42px; backgroundImage:{{ tutDrinkUrl }}; backgroundSize:contain; backgroundRepeat:no-repeat; backgroundPosition:center; imageRendering:pixelated;"></div><span>{{ tutRecipe.name }}</span></div>
+            <div style="display:flex; gap:8px;">
+              <sc-for list="{{ tutStepsView }}" as="st" hint-placeholder-count="3">
+                <div style="width:54px; height:54px; backgroundColor:{{ st.bg }}; border:2px solid #5E244E; backgroundImage:{{ st.bgUrl }}; backgroundSize:39px 39px; backgroundRepeat:no-repeat; backgroundPosition:center; imageRendering:pixelated;"></div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="fontSize:18px; textAlign:center; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A;">Tap the glowing ingredient in order</div>
+          <div style="display:grid; gridTemplateColumns:repeat(2,1fr); gap:12px; marginTop:4px;">
+            <sc-for list="{{ tutIngredients }}" as="ing" hint-placeholder-count="4">
+              <button onClick="{{ ing.onTap }}" style="position:relative; overflow:hidden; fontFamily:'VT323',monospace; display:flex; flexDirection:column; alignItems:center; gap:6px; padding:16px 8px; borderRadius:0; background:#FFF6DC; cursor:pointer; border:3px solid {{ ing.borderColor }}; boxShadow:3px 3px 0 #5E244E; animation:{{ ing.animation }};">
+                <div style="width:48px; height:48px; backgroundImage:{{ ing.bgUrl }}; backgroundSize:contain; backgroundRepeat:no-repeat; backgroundPosition:center; imageRendering:pixelated;"></div>
+                <span style="fontSize:17px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textTransform:uppercase;">{{ ing.label }}</span>
+                <div style="position:absolute; left:0; bottom:0; height:5px; width:{{ ing.brewPct }}%; background:#E68457; opacity:{{ ing.brewOpacity }};"></div>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isPlay}}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1; display:flex; flexDirection:column; boxSizing:border-box; overflow:hidden;">
+        <div style="display:flex; alignItems:center; justifyContent:space-between; padding:8px 18px; background:#8E1240; minHeight:24px;">
+          <button onClick="{{ quitPlay }}" style="flexShrink:0; border:none; background:none; fontSize:23px; cursor:pointer; color:#FFE8B4; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A;">✕</button>
+          <div style="flex:1; minWidth:0; overflow:hidden; textOverflow:ellipsis; whiteSpace:nowrap; lineHeight:1; fontFamily:'VT323',monospace; fontSize:32px; fontWeight:700; color:{{ phaseColor }}; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textAlign:center; textTransform:uppercase; animation:{{ phaseAnim }};">{{ phaseLabel }}</div>
+          <sc-if value="{{ isShift }}" hint-placeholder-val="{{ true }}">
+            <div style="flexShrink:0; display:flex; alignItems:center; gap:4px; lineHeight:1; fontFamily:'VT323',monospace; fontSize:21px; color:#FFE8B4; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A;"><span>⏱</span><span>{{ timeLeft }}s</span></div>
+          </sc-if>
+          <sc-if value="{{ isEndless }}" hint-placeholder-val="{{ false }}">
+            <div style="flexShrink:0; display:flex; alignItems:center; lineHeight:1; fontFamily:'VT323',monospace; fontSize:18px; color:#E68457; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A;">∞</div>
+          </sc-if>
+        </div>
+        <div style="display:flex; alignItems:center; justifyContent:space-between; padding:8px 18px; background:#6E0A30;">
+          <div style="fontFamily:'Press Start 2P',monospace; fontSize:16px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A;">{{ score }} PTS</div>
+          <div style="display:flex; alignItems:center; gap:10px;">
+            <div style="fontFamily:'VT323',monospace; fontSize:18px; color:#E68457; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textTransform:uppercase; lineHeight:1;">{{ streakMultLabel }}</div>
+            <div style="fontFamily:'VT323',monospace; fontSize:17px; color:#FF9AA8; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; letterSpacing:1px; lineHeight:1;">{{ livesLabel }}</div>
+          </div>
+        </div>
+
+<div style="height:22dvh; minHeight:104px; maxHeight:200px; position:relative; borderBottom:4px solid #5E244E; flexShrink:0; overflow:hidden; background:#FFE8B4;">
+          <img src="assets/cafe-wall.png" alt="" style="position:absolute; inset:0; width:100%; height:100%; objectFit:cover; zIndex:0; imageRendering:pixelated;"/>
+
+<img src="assets/barista.png" alt="Barista" style="position:absolute; left:34px; bottom:48px; width:96px; height:96px; zIndex:1; imageRendering:pixelated; animation:{{ baristaAnim }};"/>
+
+          <sc-if value="{{ isBrewingNow }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; left:74px; bottom:142px; zIndex:1; fontSize:21px; animation:steamRise 0.75s ease-out infinite;">💨</div>
+          </sc-if>
+
+<div style="position:absolute; left:0; bottom:0; width:288px; height:72px; zIndex:2; boxSizing:border-box;">
+            <img src="assets/bar-counter.png" alt="" style="width:100%; height:100%; objectFit:fill; imageRendering:pixelated;"/>
+          </div>
+
+          <sc-if value="{{ hasLeaving }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; right:18px; bottom:-16px; zIndex:3; width:96px; height:96px; backgroundImage:{{ leavingSpriteUrl }}; backgroundSize:contain; backgroundRepeat:no-repeat; imageRendering:pixelated; animation:walkOut 0.5s steps(5) forwards;"></div>
+          </sc-if>
+
+          <sc-if value="{{ hasActiveCustomer }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute; right:18px; bottom:-16px; zIndex:3; width:96px; display:flex; flexDirection:column; alignItems:center; animation:{{ walkInAnim }};">
+              <div style="background:#FFF6DC; border:2px solid #5E244E; boxShadow:2px 2px 0 #5E244E; padding:4px 6px; display:flex; alignItems:center; gap:4px; marginBottom:4px; whiteSpace:nowrap;">
+                <div style="width:36px; height:36px; backgroundImage:{{ activeDrinkUrl }}; backgroundSize:contain; backgroundRepeat:no-repeat; backgroundPosition:center; imageRendering:pixelated;"></div>
+                <span style="fontSize:21px; lineHeight:1;">{{ activeFace }}</span>
+                <sc-if value="{{ activeIsVip }}" hint-placeholder-val="{{ false }}">
+                  <span style="fontFamily:'VT323',monospace; fontSize:17px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; background:#E68457; border:1px solid #5E244E; padding:0 4px;">VIP x2</span>
+                </sc-if>
+              </div>
+<div style="width:96px; height:96px; backgroundImage:{{ activeSpriteUrl }}; backgroundSize:contain; backgroundRepeat:no-repeat; imageRendering:pixelated;"></div>
+            </div>
+          </sc-if>
+        </div>
+
+<div style="height:134px; flexShrink:0; overflow:hidden; position:relative;">
+        <sc-if value="{{ hasActiveCustomer }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:8px 16px 0 16px; display:flex; flexDirection:column; gap:5px;">
+            <div style="display:flex; alignItems:center; justifyContent:space-between;">
+              <div style="flex:1; minWidth:0; overflow:hidden; textOverflow:ellipsis; whiteSpace:nowrap; lineHeight:1.1; fontFamily:'VT323',monospace; fontSize:24px; fontWeight:700; paddingLeft:10px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textTransform:uppercase;">{{ activeRecipe.name }}</div>
+
+            </div>
+            <div style="height:12px; border:2px solid #5E244E; background:#F3DCA8; overflow:hidden;">
+              <div style="height:100%; width:{{ activePatiencePct }}%; background:{{ activeBarColor }};"></div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <sc-for list="{{ activeSteps }}" as="st" hint-placeholder-count="3">
+                <div style="width:60px; height:60px; backgroundColor:{{ st.bg }}; border:2px solid #5E244E; backgroundImage:{{ st.bgUrl }}; backgroundSize:45px 45px; backgroundRepeat:no-repeat; backgroundPosition:center; imageRendering:pixelated;"></div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noActiveCustomer }}" hint-placeholder-val="{{ false }}">
+          <div style="textAlign:center; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; fontSize:21px; padding:34px 12px;">Waiting for the next customer…</div>
+        </sc-if>
+        </div>
+
+        <sc-if value="{{ hasQueue }}" hint-placeholder-val="{{ false }}"><div style="height:44px; flexShrink:0; display:flex; gap:8px; overflowX:auto; overflowY:hidden; padding:6px 16px 0; boxSizing:border-box;">
+          <sc-for list="{{ queueRest }}" as="q" hint-placeholder-count="2">
+            <div style="flex:0 0 auto; height:34px; boxSizing:border-box; background:#FFF6DC; border:2px solid #5E244E; padding:0 8px; display:flex; alignItems:center; gap:6px; opacity:0.85;">
+              <div style="width:36px; height:36px; flexShrink:0; backgroundImage:{{ q.spriteUrl }}; backgroundSize:contain; backgroundRepeat:no-repeat; imageRendering:pixelated;"></div>
+              <div style="width:30px; height:30px; flexShrink:0; backgroundImage:{{ q.drinkUrl }}; backgroundSize:contain; backgroundRepeat:no-repeat; backgroundPosition:center; imageRendering:pixelated;"></div>
+              <span style="fontSize:18px; lineHeight:1; textShadow:none;">{{ q.face }}</span>
+              <span style="fontSize:16px; fontFamily:'VT323',monospace; textShadow:none; color:{{ q.barColor }};">{{ q.pct }}%</span>
+            </div>
+          </sc-for>
+        </div></sc-if>
+
+        <div style="flex:1; minHeight:320px; padding:22px 16px 10px;">
+          <div style="display:grid; gridTemplateColumns:repeat(3,1fr); gap:10px;">
+            <sc-for list="{{ stationIngredients }}" as="ing" hint-placeholder-count="9">
+              <button onClick="{{ ing.onTap }}" style="position:relative; overflow:hidden; fontFamily:'VT323',monospace; display:flex; flexDirection:column; alignItems:center; gap:2px; padding:4px 4px; borderRadius:0; background:#FFF6DC; cursor:pointer; border:3px solid {{ ing.borderColor }}; boxShadow:3px 3px 0 #5E244E; animation:{{ ing.animation }};">
+                <div style="width:51px; height:51px; backgroundImage:{{ ing.bgUrl }}; backgroundSize:contain; backgroundRepeat:no-repeat; backgroundPosition:center; imageRendering:pixelated;"></div>
+                <span style="fontSize:22px; lineHeight:1.05; fontWeight:700; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textAlign:center; textTransform:uppercase;">{{ ing.label }}</span>
+                <div style="position:absolute; left:0; bottom:0; height:4px; width:{{ ing.brewPct }}%; background:#E68457; opacity:{{ ing.brewOpacity }};"></div>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{isResults}}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1; display:flex; flexDirection:column; padding:22px 20px; boxSizing:border-box; gap:14px; overflowY:auto;">
+        <div style="fontFamily:'Press Start 2P',monospace; fontSize:16px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textAlign:center; lineHeight:1.6;">{{ resultsTitle }}</div>
+
+        <sc-if value="{{ notBoardOnly }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex; justifyContent:space-around; background:#FFF6DC; border:3px solid #5E244E; padding:14px;">
+            <div style="textAlign:center;">
+              <div style="fontSize:25px; fontFamily:'Press Start 2P',monospace; color:#FF9AA8; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A;">{{ finalScore }}</div>
+              <div style="fontSize:16px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textTransform:uppercase;">Final Score</div>
+            </div>
+            <div style="textAlign:center;">
+              <div style="fontSize:25px; fontFamily:'Press Start 2P',monospace; color:#FF9AA8; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A;">{{ finalMaxStreak }}X</div>
+              <div style="fontSize:16px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textTransform:uppercase;">Max Streak</div>
+            </div>
+          </div>
+        </sc-if>
+
+        <div style="background:#FFF6DC; border:3px solid #5E244E;">
+          <div style="display:grid; gridTemplateColumns:36px 1fr 60px 60px; padding:8px 12px; background:#5E244E; color:#FFE8B4; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; fontSize:15px; fontFamily:'VT323',monospace; textTransform:uppercase;">
+            <div>#</div><div>Player</div><div>Score</div><div>Streak</div>
+          </div>
+          <sc-if value="{{ emptyBoard }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:14px 12px; fontSize:18px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textAlign:center;">No scores yet — play a shift to set one.</div>
+          </sc-if>
+          <sc-for list="{{ board }}" as="row" hint-placeholder-count="5">
+            <div style="display:grid; gridTemplateColumns:36px 1fr 60px 60px; padding:8px 12px; fontSize:21px; borderTop:2px solid #F3DCA8; color:{{ row.color }}; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; fontWeight:{{ row.weight }};">
+              <div>{{ row.rank }}</div><div>{{ row.name }}</div><div>{{ row.score }}</div><div>{{ row.streak }}x</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <sc-if value="{{ showInitialsForm }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; flexDirection:column; alignItems:center; gap:10px; marginTop:4px;">
+            <div style="fontSize:17px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textTransform:uppercase;">Enter your name</div>
+            <input value="{{ initials }}" onChange="{{ onInitialsChange }}" maxLength="16" style="fontFamily:'Press Start 2P',monospace; fontSize:13px; textAlign:center; letterSpacing:1px; width:270px; padding:8px; borderRadius:0; border:3px solid #5E244E; textTransform:uppercase;"/>
+            <button onClick="{{ submitScore }}" style="fontFamily:'VT323',monospace; fontSize:23px; padding:9px 22px; borderRadius:0; border:3px solid #5E244E; background:#AA1C41; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; boxShadow:3px 3px 0 #5E244E; textTransform:uppercase;">Save Score</button>
+          </div>
+        </sc-if>
+
+        <div style="display:flex; gap:10px; marginTop:6px;">
+          <button onClick="{{ playAgain }}" style="flex:1; fontFamily:'VT323',monospace; fontSize:23px; padding:12px; borderRadius:0; border:3px solid #5E244E; background:#AA1C41; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; boxShadow:3px 3px 0 #5E244E; textTransform:uppercase;">Play Again</button>
+          <button onClick="{{ goTitle }}" style="flex:1; fontFamily:'VT323',monospace; fontSize:23px; padding:12px; borderRadius:0; border:3px solid #5E244E; background:transparent; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; textTransform:uppercase;">Main Menu</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{settingsOpen}}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute; inset:0; background:rgba(94,36,78,0.7); display:flex; alignItems:center; justifyContent:center; zIndex:30;">
+        <div style="background:#FFF6DC; border:3px solid #5E244E; boxShadow:6px 6px 0 #5E244E; padding:22px; width:80%; display:flex; flexDirection:column; gap:16px;">
+          <div style="fontFamily:'Press Start 2P',monospace; fontSize:15px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A;">SETTINGS</div>
+          <div style="display:flex; alignItems:center; justifyContent:space-between;">
+            <div style="fontSize:21px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textTransform:uppercase;">🔊 Sound FX</div>
+            <button onClick="{{ toggleSfx }}" style="width:50px; height:28px; borderRadius:0; border:2px solid #5E244E; cursor:pointer; background:{{ sfxTrack }}; position:relative;"><span style="position:absolute; top:2px; left:{{ sfxKnobPos }}px; width:20px; height:20px; background:#FFF6DC; border:1px solid #5E244E;"></span></button>
+          </div>
+          <div style="display:flex; alignItems:center; justifyContent:space-between;">
+            <div style="fontSize:21px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textTransform:uppercase;">🎵 Music</div>
+            <button onClick="{{ toggleBgm }}" style="width:50px; height:28px; borderRadius:0; border:2px solid #5E244E; cursor:pointer; background:{{ bgmTrack }}; position:relative;"><span style="position:absolute; top:2px; left:{{ bgmKnobPos }}px; width:20px; height:20px; background:#FFF6DC; border:1px solid #5E244E;"></span></button>
+          </div>
+          <button onClick="{{ closeSettings }}" style="fontFamily:'VT323',monospace; fontSize:23px; padding:10px; borderRadius:0; border:3px solid #5E244E; background:#AA1C41; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; boxShadow:3px 3px 0 #5E244E; textTransform:uppercase;">Done</button>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute; top:104px; left:50%; transform:translateX(-50%); padding:14px 26px; borderRadius:0; border:3px solid #5E244E; boxShadow:4px 4px 0 #5E244E; background:{{ toastBg }}; color:#FFE8B4; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; fontFamily:'VT323',monospace; fontSize:28px; fontWeight:700; zIndex:40; animation:toastIn 0.2s ease-out; whiteSpace:nowrap; textTransform:uppercase; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A;">{{ toastText }}</div>
+    </sc-if>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  recipes = {
+    americano: { name: 'Americano', icon: '☕', img: 'assets/drink-americano.png', steps: ['ice', 'water', 'espresso'], base: 5 },
+    latte: { name: 'Latte', icon: '🥛', img: 'assets/drink-latte.png', steps: ['ice', 'milk', 'espresso'], base: 5 },
+    mocha: { name: 'Mocha', icon: '🍫', img: 'assets/drink-mocha.png', steps: ['cocoa', 'espresso', 'milk', 'ice'], base: 8 },
+    blackOrange: { name: 'Black Orange', icon: '🍊', img: 'assets/drink-black-orange.png', steps: ['ice', 'orange', 'espresso'], base: 10 },
+    blackCoconut: { name: 'Black Coconut', icon: '🥥', img: 'assets/drink-black-coconut.png', steps: ['ice', 'coconut', 'espresso'], base: 10 },
+    matcha: { name: 'Matcha Latte', icon: '🍵', img: 'assets/drink-matcha.png', steps: ['matcha', 'milk', 'ice'], base: 8 },
+    thaitea: { name: 'Thai Tea', icon: '🧉', img: 'assets/drink-thaitea.png', steps: ['thaitea', 'milk', 'ice'], base: 8 },
+  };
+  ingredientDefs = [
+    { key: 'ice', label: 'Ice', icon: '❄️', img: 'assets/ing-ice.png' },
+    { key: 'espresso', label: 'Espresso', icon: '☕', img: 'assets/ing-espresso.png' },
+    { key: 'water', label: 'Water', icon: '💧', img: 'assets/ing-water.png' },
+    { key: 'milk', label: 'Fresh Milk', icon: '🥛', img: 'assets/ing-milk.png' },
+    { key: 'orange', label: 'Orange Juice', icon: '🍊', img: 'assets/ing-orange.png' },
+    { key: 'coconut', label: 'Coconut Juice', icon: '🥥', img: 'assets/ing-coconut.png' },
+    { key: 'cocoa', label: 'Cocoa Powder', icon: '🍫', img: 'assets/ing-cocoa.png' },
+    { key: 'matcha', label: 'Matcha Powder', icon: '🍵', img: 'assets/ing-matcha.png' },
+    { key: 'thaitea', label: 'Thai Tea Powder', icon: '🧉', img: 'assets/ing-thaitea.png' },
+  ];
+  storageKey = 'commonground_highscores_v1';
+
+  _loadScores() {
+    try { return JSON.parse(localStorage.getItem(this.storageKey)) || []; } catch (e) { return []; }
+  }
+
+  _saveScore(entry) {
+    const all = [...this._loadScores(), entry].sort((a, b) => b.score - a.score).slice(0, 10);
+    try { localStorage.setItem(this.storageKey, JSON.stringify(all)); } catch (e) {}
+    return all;
+  }
+
+  state = {
+    screen: 'title', boardOnly: false,
+    settingsOpen: false, sfxOn: true, bgmOn: true,
+    tutStep: 0, tutCup: [],
+    elapsed: 0, customers: [], cup: [],
+    score: 0, streak: 0, maxStreak: 0, nextCustomerId: 1, lastSpawn: 0,
+    toast: null, finished: false, initials: '', submitted: false,
+    brewing: null, brewProgress: 0,
+    gameMode: 'shift', lives: 3, event: null, eventNextAt: 0, vipAt: 60, vipSpawned: false,
+    leaving: null, leavingUntil: 0, toastUntil: 0, savedBoard: null,
+  };
+
+  _sfx(kind) {
+    if (!this.state.sfxOn) return;
+    try {
+      if (!this._actx) this._actx = new (window.AudioContext || window.webkitAudioContext)();
+      const ctx = this._actx;
+      if (ctx.state === 'suspended') ctx.resume();
+      const notes = {
+        tap: [[660, 0.06]],
+        pour: [[440, 0.05], [560, 0.05]],
+        serve: [[784, 0.08], [988, 0.08], [1319, 0.14]],
+        vip: [[988, 0.07], [1319, 0.07], [1568, 0.16]],
+        wrong: [[200, 0.12], [150, 0.16]],
+        walkout: [[330, 0.12], [247, 0.12], [175, 0.22]],
+        over: [[392, 0.18], [311, 0.18], [233, 0.3]],
+      }[kind] || [[660, 0.06]];
+      let t = ctx.currentTime;
+      notes.forEach(([freq, dur]) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(freq, t);
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.exponentialRampToValueAtTime(0.12, t + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(t);
+        osc.stop(t + dur + 0.02);
+        t += dur;
+      });
+    } catch (e) {}
+  }
+
+  _src = {};
+  _u(p) { return 'url(' + (this._src[p] || p) + ')'; }
+
+  componentDidMount() {
+    const pre = document.getElementById('__preload');
+    if (pre) {
+      pre.querySelectorAll('img[data-key]').forEach(img => { this._src[img.getAttribute('data-key')] = img.getAttribute('src'); });
+      this.forceUpdate();
+    }
+    this._bgm = (pre && pre.querySelector('#__bgm')) || new Audio('assets/bgm.mp3');
+    this._bgm.loop = true;
+    this._bgm.volume = 0.35;
+    this._tryPlay = () => {
+      if (this.state.bgmOn) this._bgm.play().catch(() => {});
+      try {
+        if (!this._actx) this._actx = new (window.AudioContext || window.webkitAudioContext)();
+        if (this._actx.state === 'suspended') this._actx.resume();
+      } catch (e) {}
+    };
+    window.addEventListener('pointerdown', this._tryPlay);
+  }
+
+  componentWillUnmount() {
+    this._stopTimer(); clearTimeout(this._toastTimer); clearInterval(this._brewTimer);
+    window.removeEventListener('pointerdown', this._tryPlay);
+    if (this._bgm) { this._bgm.pause(); this._bgm = null; }
+  }
+
+  goTo(screen) { this.setState({ screen }); }
+  goTitle() { this._stopTimer(); this._clearBrew(); this.setState({ screen: 'title', toast: null, leaving: null }); }
+  viewHighScores() { this.setState({ screen: 'results', boardOnly: true, toast: null }); }
+
+  startTutorial() { this._clearBrew(); this.setState({ screen: 'tutorial', tutStep: 0, tutCup: [], toast: null }); }
+
+  startPlay(gameMode) {
+    const mode = gameMode === 'endless' ? 'endless' : 'shift';
+    this._stopTimer();
+    this._clearBrew();
+    this.setState({
+      screen: 'play', gameMode: mode, boardOnly: false, elapsed: 0, customers: [], cup: [],
+      score: 0, streak: 0, maxStreak: 0, nextCustomerId: 1, lastSpawn: -10,
+      toast: null, finished: false, initials: '', submitted: false,
+      lives: mode === 'endless' ? 3 : 4, event: null, eventNextAt: 18 + Math.random() * 12,
+      vipAt: 25 + Math.random() * 35, vipSpawned: false,
+    }, () => {
+      this.setState(s => ({ customers: [this._makeCustomer(s.nextCustomerId)], nextCustomerId: s.nextCustomerId + 1 }));
+      this._startTimer();
+    });
+  }
+
+  startEndless() { this.startPlay('endless'); }
+
+  quitPlay() { this._stopTimer(); this._clearBrew(); this.setState({ screen: 'title', toast: null, leaving: null }); }
+
+  _startTimer() { this._stopTimer(); this._timer = setInterval(() => this._tick(), 150); }
+  _stopTimer() { if (this._timer) clearInterval(this._timer); this._timer = null; }
+
+  shiftLength = 120;
+  _phase(elapsed) { return elapsed < 70 ? 'normal' : elapsed < 112 ? 'rush' : 'closing'; }
+
+  events = [
+    { key: 'happy', label: '☕ HAPPY HOUR — 2X POINTS', scoreMult: 2, dur: 22 },
+    { key: 'crowd', label: '🔥 RUSH! CROWD INCOMING', concurrentBonus: 1, spawnMult: 0.6, dur: 22 },
+    { key: 'slow', label: '🌤 SLOW MORNING — PATIENCE UP', drainMult: 0.5, dur: 22 },
+    { key: 'jam', label: '⚙️ MACHINE JAM — SLOW BREW', brewMult: 1.8, dur: 18 },
+    { key: 'vip', label: '⭐ VIP GUEST ARRIVES', spawnVip: true, dur: 6 },
+  ];
+
+  customerSprites = [
+    'assets/customer_1.png', 'assets/customer_2.png', 'assets/customer_3.png', 'assets/customer_4.png',
+    'assets/customer_5.png', 'assets/customer_6.png', 'assets/customer_7.png', 'assets/customer_8.png',
+    'assets/customer_9.png', 'assets/customer_10.png',
+  ];
+
+  _makeCustomer(id, forceVip) {
+    const keys = Object.keys(this.recipes);
+    const key = keys[Math.floor(Math.random() * keys.length)];
+    const vip = !!forceVip || Math.random() < 0.08;
+    const sprite = vip ? 'assets/customer_VIP.png' : this.customerSprites[Math.floor(Math.random() * this.customerSprites.length)];
+    return { id, drinkKey: key, patience: 100, sprite, vip };
+  }
+
+  _walkAnim(activeCustomer) {
+    const id = activeCustomer ? activeCustomer.id : null;
+    if (id !== this._lastFrontId) { this._lastFrontId = id; this._walkFlip = !this._walkFlip; }
+    return this._walkFlip ? 'walkInA 0.5s steps(5) both' : 'walkInB 0.5s steps(5) both';
+  }
+
+  _flashToast(toast, ms) {
+    this.setState(s => ({ toast, toastUntil: s.elapsed + (ms || 1300) / 1000 }));
+    clearTimeout(this._toastTimer);
+    this._toastTimer = setTimeout(() => this.setState({ toast: null }), ms || 1300);
+  }
+
+  _tick() {
+    this.setState(s => {
+      if (s.screen !== 'play' || s.finished) return null;
+      const elapsed = s.elapsed + 0.15;
+      const endless = s.gameMode === 'endless';
+      const phase = endless ? 'endless' : this._phase(elapsed);
+
+      let event = s.event, eventNextAt = s.eventNextAt, newEvent = null;
+      if (endless) {
+        if (event && elapsed > event.until) event = null;
+        if (!event && elapsed > eventNextAt) {
+          const def = this.events[Math.floor(Math.random() * this.events.length)];
+          newEvent = def;
+          event = { ...def, until: elapsed + def.dur };
+          eventNextAt = elapsed + def.dur + 14 + Math.random() * 14;
+        }
+      }
+      const ev = event || {};
+      const level = endless ? Math.floor(elapsed / 45) : 0;
+      const baseDrain = endless ? 0.35 * (1 + level * 0.22) : (phase === 'rush' ? 0.85 : 0.35);
+      const drainRate = baseDrain * (ev.drainMult || 1);
+      const frontIdBefore = s.customers.length ? s.customers[0].id : null;
+      let customers = s.customers.map((c, i) => i === 0
+        ? { ...c, patience: Math.max(0, c.patience - drainRate * (0.9 + Math.random() * 0.2)) }
+        : c);
+      const walked = customers.filter(c => c.patience <= 0);
+      customers = customers.filter(c => c.patience > 0);
+      let score = s.score, streak = s.streak, lives = s.lives;
+      let toast = s.toast;
+      let leaving = s.leaving, leavingUntil = s.leavingUntil, toastUntil = s.toastUntil;
+      if (leaving && elapsed > leavingUntil) leaving = null;
+      if (walked.length) {
+        streak = 0;
+        lives = Math.max(0, lives - walked.length);
+        toast = { type: 'walkout', text: 'Customer walked out! -1 ❤' };
+        this._pendingWalkoutSfx = true;
+        toastUntil = elapsed + 1.4;
+        leaving = { sprite: walked[0].sprite };
+        leavingUntil = elapsed + 0.5;
+      }
+      if (newEvent) { toast = { type: 'event', text: newEvent.label }; toastUntil = elapsed + 2.2; }
+      if (toast && elapsed > toastUntil) toast = null;
+      const frontStillThere = customers.some(c => c.id === frontIdBefore);
+      const cup = frontIdBefore && !frontStillThere ? [] : s.cup;
+
+      let nextCustomerId = s.nextCustomerId, lastSpawn = s.lastSpawn, vipSpawned = s.vipSpawned;
+      const maxConcurrent = endless
+        ? Math.min(3, 1 + Math.floor(level / 2)) + (ev.concurrentBonus || 0)
+        : (phase === 'normal' ? 1 : phase === 'rush' ? 3 : 0);
+      const spawnInterval = (endless ? Math.max(1.8, 5.5 - level * 0.5) : (phase === 'normal' ? 6 : 3.2)) * (ev.spawnMult || 1);
+      if (phase !== 'closing' && customers.length < maxConcurrent && elapsed - lastSpawn > spawnInterval) {
+        const forceVip = (ev.spawnVip && newEvent) || (!endless && !vipSpawned && elapsed >= s.vipAt);
+        const c = this._makeCustomer(nextCustomerId, forceVip);
+        if (c.vip) vipSpawned = true;
+        customers = [...customers, c];
+        nextCustomerId++;
+        lastSpawn = elapsed;
+      }
+      let finished = false;
+      if (lives <= 0) finished = true;
+      if (!endless) {
+        if (phase === 'closing' && customers.length === 0) finished = true;
+        if (elapsed > this.shiftLength) finished = true;
+      }
+
+      return { elapsed, customers, score, streak, maxStreak: Math.max(s.maxStreak, streak), cup, toast, nextCustomerId, lastSpawn, finished, lives, event, eventNextAt, vipSpawned, leaving, leavingUntil, toastUntil };
+    }, () => {
+      if (this._pendingWalkoutSfx) { this._pendingWalkoutSfx = false; this._sfx('walkout'); }
+      if (this.state.finished) { this._stopTimer(); this._clearBrew(); this._sfx('over'); this.setState({ screen: 'results', toast: null, leaving: null }); }
+    });
+  }
+
+  tapIngredient(key) {
+    const s = this.state;
+    if (this._brewLock || s.screen !== 'play' || s.finished || !s.customers.length) return;
+    this._startBrew(key, 'play');
+  }
+
+  _clearBrew() {
+    clearInterval(this._brewTimer);
+    this._brewTimer = null;
+    this._brewLock = false;
+    this.setState({ brewing: null, brewProgress: 0 });
+  }
+
+  _startBrew(key, mode) {
+    this._sfx('tap');
+    this._brewLock = true;
+    clearInterval(this._brewTimer);
+    this.setState({ brewing: { key, mode }, brewProgress: 0 });
+    const ev = this.state.event || {};
+    const duration = 500 * (ev.brewMult || 1), stepMs = 40;
+    let elapsed = 0;
+    clearInterval(this._brewTimer);
+    this._brewTimer = setInterval(() => {
+      elapsed += stepMs;
+      const pct = Math.min(100, Math.round(elapsed / duration * 100));
+      this.setState({ brewProgress: pct });
+      if (pct >= 100) {
+        this._clearBrew();
+        if (mode === 'play') this._commitPlayTap(key);
+        else this._commitTutorialTap(key);
+      }
+    }, stepMs);
+  }
+
+  _commitPlayTap(key) {
+    const s = this.state;
+    if (s.screen !== 'play' || s.finished || !s.customers.length) return;
+    const active = s.customers[0];
+    const recipe = this.recipes[active.drinkKey];
+    const idx = s.cup.length;
+    if (recipe.steps[idx] === key) {
+      const cup = [...s.cup, key];
+      if (cup.length === recipe.steps.length) this._serve(active, recipe);
+      else { this._sfx('pour'); this.setState({ cup }); }
+    } else {
+      this._sfx('wrong');
+      this.setState(st => ({ score: st.score - 5, streak: 0, cup: [] }));
+      this._flashToast({ type: 'wrong', text: 'Wrong ingredient! -5' }, 1200);
+    }
+  }
+
+  _serve(active, recipe) {
+    this._sfx(active.vip ? 'vip' : 'serve');
+    this.setState(s => {
+      const speedBonus = active.patience >= 70 ? 5 : active.patience >= 35 ? 2 : 0;
+      const streak = s.streak + 1;
+      const mult = streak >= 10 ? 3 : streak >= 5 ? 2 : streak >= 3 ? 1.5 : 1;
+      const vipMult = active.vip ? 2 : 1;
+      const eventMult = (s.event && s.event.scoreMult) || 1;
+      const gained = Math.round((recipe.base + speedBonus) * mult * vipMult * eventMult);
+      return {
+        score: s.score + gained, streak, maxStreak: Math.max(s.maxStreak, streak),
+        customers: s.customers.filter(c => c.id !== active.id), cup: [],
+        leaving: { sprite: active.sprite }, leavingUntil: s.elapsed + 0.5,
+        toast: { type: 'success', text: active.vip ? `VIP served! +${gained}` : `${recipe.name} served! +${gained}` },
+        toastUntil: s.elapsed + 1.2,
+      };
+    });
+  }
+
+  trashCup() {
+    if (!this.state.cup.length) return;
+    this.setState(s => ({ cup: [], score: s.score - 2 }));
+    this._flashToast({ type: 'wrong', text: 'Cup discarded -2' }, 1000);
+  }
+
+  tutorialTap(key) {
+    if (this._brewLock) return;
+    this._startBrew(key, 'tutorial');
+  }
+
+  _commitTutorialTap(key) {
+    const s = this.state;
+    const recipeKey = s.tutStep === 0 ? 'americano' : 'latte';
+    const recipe = this.recipes[recipeKey];
+    const idx = s.tutCup.length;
+    if (recipe.steps[idx] === key) {
+      const tutCup = [...s.tutCup, key];
+      if (tutCup.length === recipe.steps.length) {
+        if (s.tutStep === 0) { this.setState({ tutStep: 1, tutCup: [] }); this._flashToast({ type: 'success', text: 'Americano done! Now try a Latte.' }, 1600); }
+        else { this.setState({ tutStep: 2, tutCup: [] }); this._flashToast({ type: 'success', text: 'Tutorial complete!' }, 1200); }
+      } else this.setState({ tutCup });
+    } else {
+      this._flashToast({ type: 'wrong', text: 'Not quite — follow the glow!' }, 900);
+    }
+  }
+
+  setInitials(v) { this.setState({ initials: v.toUpperCase().slice(0, 16) }); }
+  submitScore() {
+    const s = this.state;
+    const name = (s.initials || 'YOU').toUpperCase().slice(0, 16);
+    const board = this._saveScore({ name, score: s.score, streak: s.maxStreak });
+    this.setState({ submitted: true, savedBoard: board });
+  }
+  toggleSfx() { this.setState(s => ({ sfxOn: !s.sfxOn })); }
+  toggleBgm() {
+    this.setState(s => {
+      const bgmOn = !s.bgmOn;
+      if (this._bgm) { if (bgmOn) this._bgm.play().catch(() => {}); else this._bgm.pause(); }
+      return { bgmOn };
+    });
+  }
+  openSettings() { this.setState({ settingsOpen: true }); }
+  closeSettings() { this.setState({ settingsOpen: false }); }
+  playAgain() { this.startPlay(this.state.gameMode); }
+
+  renderVals() {
+    const s = this.state;
+    const faceFor = p => p >= 70 ? '😊' : p >= 35 ? '😐' : p > 0 ? '😟' : '😡';
+    const barColorFor = p => p >= 70 ? '#4E9A51' : p >= 40 ? '#E8C547' : p >= 20 ? '#E68457' : '#AA1C41';
+    const isBrewing = key => s.brewing && s.brewing.key === key;
+    const decorate = (key, isNext) => {
+      const ing = this.ingredientDefs.find(i => i.key === key);
+      return {
+        key: ing.key, label: ing.label, icon: ing.icon, img: ing.img, bgUrl: this._u(ing.img),
+        borderColor: isNext ? '#E68457' : '#5E244E',
+        animation: isNext ? 'pulseGlow 0.6s steps(2) infinite' : 'none',
+        onTap: () => this.tapIngredient(key),
+        brewPct: isBrewing(key) ? s.brewProgress : 0,
+        brewOpacity: isBrewing(key) ? 1 : 0,
+      };
+    };
+    const decorateTut = (key, isNext) => {
+      const d = decorate(key, isNext);
+      return { ...d, onTap: () => this.tutorialTap(key) };
+    };
+    const stepView = (steps, filledCount) => steps.map((k, i) => {
+      const ing = this.ingredientDefs.find(x => x.key === k);
+      return { icon: ing.icon, img: ing.img, bgUrl: this._u(ing.img), bg: i < filledCount ? '#4E9A51' : '#FFF6DC' };
+    });
+
+    const activeCustomer = s.customers[0] || null;
+    const activeRecipe = activeCustomer ? this.recipes[activeCustomer.drinkKey] : null;
+    const nextNeeded = activeRecipe ? activeRecipe.steps[s.cup.length] : null;
+
+    const tutRecipeKey = s.tutStep === 0 ? 'americano' : s.tutStep === 1 ? 'latte' : null;
+    const tutRecipe = tutRecipeKey ? this.recipes[tutRecipeKey] : null;
+    const tutNextNeeded = tutRecipe ? tutRecipe.steps[s.tutCup.length] : null;
+    const tutIngredientKeys = ['ice', 'water', 'milk', 'espresso'];
+
+    const endless = s.gameMode === 'endless';
+    const phase = this._phase(s.elapsed);
+    const phaseLabel = endless
+      ? (s.event ? s.event.label : '🔥 Unlimited')
+      : (phase === 'normal' ? 'Morning Pace' : phase === 'rush' ? '🔥 Rush Hour! 🔥' : 'Closing');
+    const timeLeft = Math.max(0, Math.round(this.shiftLength - s.elapsed));
+    const queueRest = s.customers.slice(1).map(c => ({ recipe: this.recipes[c.drinkKey], sprite: c.sprite, spriteUrl: this._u(c.sprite), drinkUrl: this._u(this.recipes[c.drinkKey].img), face: faceFor(c.patience), barColor: barColorFor(c.patience), pct: Math.round(c.patience) }));
+
+    const saved = s.savedBoard || this._loadScores();
+    let board = saved.map(r => ({ ...r, isPlayer: false }));
+    if (!s.boardOnly && !s.submitted) board = [...board, { name: s.initials || 'YOU', score: s.score, streak: s.maxStreak, isPlayer: true }];
+    board.sort((a, b) => b.score - a.score);
+    board = board.slice(0, 5).map((r, i) => ({ rank: i + 1, name: r.name, score: r.score, streak: r.streak, color: r.isPlayer ? '#FFD27A' : '#FFF6DC', weight: r.isPlayer ? 700 : 400 }));
+
+    return {
+      isTitle: s.screen === 'title', isTutorial: s.screen === 'tutorial', isPlay: s.screen === 'play', isResults: s.screen === 'results',
+      settingsOpen: s.settingsOpen,
+      goTitle: () => this.goTitle(), startTutorial: () => this.startTutorial(), startPlay: () => this.startPlay(),
+      viewHighScores: () => this.viewHighScores(), openSettings: () => this.openSettings(), closeSettings: () => this.closeSettings(),
+      toggleSfx: () => this.toggleSfx(), toggleBgm: () => this.toggleBgm(),
+      sfxTrack: s.sfxOn ? '#AA1C41' : '#D9BE93', sfxKnobPos: s.sfxOn ? 24 : 2,
+      bgmTrack: s.bgmOn ? '#AA1C41' : '#D9BE93', bgmKnobPos: s.bgmOn ? 24 : 2,
+
+      tutActive: s.tutStep < 2, tutDone: s.tutStep === 2,
+      tutRecipe, tutStepsView: tutRecipe ? stepView(tutRecipe.steps, s.tutCup.length) : [],
+      tutIngredients: tutIngredientKeys.map(k => decorateTut(k, k === tutNextNeeded)),
+
+      quitPlay: () => this.quitPlay(), phaseLabel, timeLeft, score: s.score,
+      phaseColor: !endless && phase === 'rush' ? '#E68457' : '#FFE8B4',
+      phaseAnim: !endless && phase === 'rush' ? 'rushFlicker 0.5s steps(2) infinite' : 'none',
+      isEndless: endless, isShift: !endless,
+      livesLabel: '❤'.repeat(Math.max(0, s.lives)) || '—',
+      startEndless: () => this.startEndless(),
+      streakMultLabel: s.streak >= 10 ? '3x FLOW STATE 🔥' : s.streak >= 5 ? '2x streak' : s.streak >= 3 ? '1.5x streak' : '',
+      hasActiveCustomer: !!activeCustomer, noActiveCustomer: !activeCustomer, activeRecipe,
+      activeSprite: activeCustomer ? activeCustomer.sprite : 'assets/customer_1.png',
+      activeSpriteUrl: this._u(activeCustomer ? activeCustomer.sprite : 'assets/customer_1.png'),
+      activeDrinkUrl: this._u(activeRecipe ? activeRecipe.img : 'assets/drink-latte.png'),
+      tutDrinkUrl: this._u(tutRecipe ? tutRecipe.img : 'assets/drink-americano.png'),
+      activeIsVip: !!(activeCustomer && activeCustomer.vip),
+      walkInAnim: this._walkAnim(activeCustomer),
+      hasLeaving: !!s.leaving, leavingSprite: s.leaving ? s.leaving.sprite : 'assets/customer_1.png',
+      leavingSpriteUrl: this._u(s.leaving ? s.leaving.sprite : 'assets/customer_1.png'),
+      isBrewingNow: !!s.brewing,
+      baristaAnim: s.brewing ? 'baristaWork 0.28s steps(3) infinite' : 'baristaIdle 2.4s ease-in-out infinite',
+      activePatiencePct: activeCustomer ? Math.round(activeCustomer.patience) : 0,
+      activeFace: activeCustomer ? faceFor(activeCustomer.patience) : '',
+      activeBarColor: activeCustomer ? barColorFor(activeCustomer.patience) : '#ccc',
+      activeSteps: activeRecipe ? stepView(activeRecipe.steps, s.cup.length) : [],
+      trashCup: () => this.trashCup(),
+      hasQueue: queueRest.length > 0, queueRest,
+      stationIngredients: this.ingredientDefs.map(i => decorate(i.key, false)),
+
+      resultsTitle: s.boardOnly ? '🏆 HIGH SCORES' : s.lives <= 0 ? '💔 OUT OF HEARTS!' : endless ? '🔥 RUN OVER!' : 'SHIFT COMPLETE!',
+      boardOnly: s.boardOnly, notBoardOnly: !s.boardOnly, finalScore: s.score, finalMaxStreak: s.maxStreak,
+      board, hasBoard: board.length > 0, emptyBoard: board.length === 0,
+      showInitialsForm: !s.boardOnly && !s.submitted,
+      initials: s.initials, onInitialsChange: e => this.setInitials(e.target.value), submitScore: () => this.submitScore(),
+      playAgain: () => this.playAgain(),
+
+      toast: s.toast, toastText: s.toast ? s.toast.text : '', toastBg: s.toast ? (s.toast.type === 'success' ? '#E68457' : s.toast.type === 'event' ? '#5E244E' : '#AA1C41') : 'transparent',
+    };
+  }
+}
+</script>
+</body>
+</html>
