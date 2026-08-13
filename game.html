@@ -290,11 +290,13 @@
           </sc-for>
         </div>
 
+        <div style="textAlign:center; fontFamily:'VT323',monospace; fontSize:17px; letterSpacing:1px; marginTop:-6px; color:{{ boardScopeColor }}; textShadow:none;">{{ boardScopeLabel }}</div>
+
         <sc-if value="{{ showInitialsForm }}" hint-placeholder-val="{{ false }}">
           <div style="display:flex; flexDirection:column; alignItems:center; gap:10px; marginTop:4px;">
             <div style="fontSize:17px; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; textTransform:uppercase;">Enter your name</div>
             <input value="{{ initials }}" onChange="{{ onInitialsChange }}" maxLength="16" style="fontFamily:'Press Start 2P',monospace; fontSize:13px; textAlign:center; letterSpacing:1px; width:270px; padding:8px; borderRadius:0; border:3px solid #5E244E; textTransform:uppercase;"/>
-            <button onClick="{{ submitScore }}" style="fontFamily:'VT323',monospace; fontSize:23px; padding:9px 22px; borderRadius:0; border:3px solid #5E244E; background:#AA1C41; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; boxShadow:3px 3px 0 #5E244E; textTransform:uppercase;">Save Score</button>
+            <button onClick="{{ submitScore }}" style="fontFamily:'VT323',monospace; fontSize:23px; padding:9px 22px; borderRadius:0; border:3px solid #5E244E; background:#AA1C41; color:#FFF6DC; textShadow:-2px -2px 0 #43163A, 2px -2px 0 #43163A, -2px 2px 0 #43163A, 2px 2px 0 #43163A, 0px -2px 0 #43163A, 0px 2px 0 #43163A, -2px 0px 0 #43163A, 2px 0px 0 #43163A; cursor:pointer; boxShadow:3px 3px 0 #5E244E; textTransform:uppercase;">{{ submitLabel }}</button>
           </div>
         </sc-if>
 
@@ -354,10 +356,75 @@ class Component extends DCLogic {
   ];
   storageKey = 'commonground_highscores_v1';
 
+  // The shared cafe leaderboard. With url/key left empty the game runs exactly
+  // as it did before — scores stay on the phone. Nothing here may ever throw:
+  // a player mid-shift on bad wifi must still finish and still see a board.
+  leaderboard = {
+    url: '',
+    key: '',
+    table: 'scores',
+  };
+
+  _remoteOn() { return !!(this.leaderboard.url && this.leaderboard.key); }
+
+  _remoteHeaders() {
+    return {
+      apikey: this.leaderboard.key,
+      Authorization: 'Bearer ' + this.leaderboard.key,
+      'Content-Type': 'application/json',
+    };
+  }
+
+  _remoteUrl(query) {
+    return this.leaderboard.url.replace(/\/+$/, '') + '/rest/v1/' + this.leaderboard.table + query;
+  }
+
+  // Every network call is time-boxed. Cafe wifi that accepts the connection and
+  // then stalls would otherwise leave the results screen spinning forever.
+  _withTimeout(ms) {
+    const ctl = new AbortController();
+    return { signal: ctl.signal, done: clearTimeout.bind(null, setTimeout(() => ctl.abort(), ms)) };
+  }
+
+  _fetchRemoteBoard() {
+    if (!this._remoteOn()) return Promise.resolve(null);
+    const t = this._withTimeout(6000);
+    return fetch(this._remoteUrl('?select=name,score,streak&order=score.desc,created_at.asc&limit=10'),
+      { headers: this._remoteHeaders(), signal: t.signal })
+      .then(res => (res.ok ? res.json() : null))
+      .then(rows => (Array.isArray(rows) ? rows : null))
+      .catch(() => null)
+      .then(v => { t.done(); return v; });
+  }
+
+  _pushRemoteScore(entry) {
+    if (!this._remoteOn()) return Promise.resolve(false);
+    const t = this._withTimeout(8000);
+    return fetch(this._remoteUrl(''), {
+      method: 'POST',
+      headers: { ...this._remoteHeaders(), Prefer: 'return=minimal' },
+      body: JSON.stringify({ name: entry.name, score: entry.score, streak: entry.streak, mode: entry.mode }),
+      signal: t.signal,
+    })
+      .then(res => res.ok)
+      .catch(() => false)
+      .then(v => { t.done(); return v; });
+  }
+
+  _refreshBoard() {
+    if (!this._remoteOn()) return;
+    this.setState({ boardLoading: true });
+    this._fetchRemoteBoard().then(rows => {
+      this.setState({ boardLoading: false, remoteBoard: rows, boardOffline: rows === null });
+    });
+  }
+
   _loadScores() {
     try { return JSON.parse(localStorage.getItem(this.storageKey)) || []; } catch (e) { return []; }
   }
 
+  // The phone keeps its own copy regardless of the shared board, so a player
+  // who scores well with the wifi down still has the run recorded somewhere.
   _saveScore(entry) {
     const all = [...this._loadScores(), entry].sort((a, b) => b.score - a.score).slice(0, 10);
     try { localStorage.setItem(this.storageKey, JSON.stringify(all)); } catch (e) {}
@@ -374,6 +441,7 @@ class Component extends DCLogic {
     brewing: null, brewProgress: 0,
     gameMode: 'shift', lives: 3, event: null, eventNextAt: 0, vipAt: 60, vipSpawned: false,
     leaving: null, leavingUntil: 0, toastUntil: 0, savedBoard: null,
+    remoteBoard: null, boardLoading: false, boardOffline: false, submitting: false,
   };
 
   _sfx(kind) {
@@ -438,7 +506,7 @@ class Component extends DCLogic {
 
   goTo(screen) { this.setState({ screen }); }
   goTitle() { this._stopTimer(); this._clearBrew(); this.setState({ screen: 'title', toast: null, leaving: null }); }
-  viewHighScores() { this.setState({ screen: 'results', boardOnly: true, toast: null }); }
+  viewHighScores() { this.setState({ screen: 'results', boardOnly: true, toast: null }); this._refreshBoard(); }
 
   startTutorial() { this._clearBrew(); this.setState({ screen: 'tutorial', tutStep: 0, tutCup: [], toast: null }); }
 
@@ -449,7 +517,7 @@ class Component extends DCLogic {
     this.setState({
       screen: 'play', gameMode: mode, boardOnly: false, elapsed: 0, customers: [], cup: [],
       score: 0, streak: 0, maxStreak: 0, nextCustomerId: 1, lastSpawn: -10,
-      toast: null, finished: false, initials: '', submitted: false,
+      toast: null, finished: false, initials: '', submitted: false, submitting: false,
       lives: mode === 'endless' ? 3 : 4, event: null, eventNextAt: 18 + Math.random() * 12,
       vipAt: 25 + Math.random() * 35, vipSpawned: false,
     }, () => {
@@ -570,7 +638,7 @@ class Component extends DCLogic {
       return { elapsed, customers, score, streak, maxStreak: Math.max(s.maxStreak, streak), cup, toast, nextCustomerId, lastSpawn, finished, lives, event, eventNextAt, vipSpawned, leaving, leavingUntil, toastUntil };
     }, () => {
       if (this._pendingWalkoutSfx) { this._pendingWalkoutSfx = false; this._sfx('walkout'); }
-      if (this.state.finished) { this._stopTimer(); this._clearBrew(); this._sfx('over'); this.setState({ screen: 'results', toast: null, leaving: null }); }
+      if (this.state.finished) { this._stopTimer(); this._clearBrew(); this._sfx('over'); this.setState({ screen: 'results', toast: null, leaving: null }); this._refreshBoard(); }
     });
   }
 
@@ -674,9 +742,18 @@ class Component extends DCLogic {
   setInitials(v) { this.setState({ initials: v.toUpperCase().slice(0, 16) }); }
   submitScore() {
     const s = this.state;
+    if (s.submitting || s.submitted) return;
     const name = (s.initials || 'YOU').toUpperCase().slice(0, 16);
-    const board = this._saveScore({ name, score: s.score, streak: s.maxStreak });
-    this.setState({ submitted: true, savedBoard: board });
+    const entry = { name, score: s.score, streak: s.maxStreak, mode: s.gameMode };
+    // Save on the phone first. That part cannot fail, so the score is never lost
+    // to a bad connection — the shared board is a best effort on top of it.
+    const board = this._saveScore(entry);
+    this.setState({ submitted: true, savedBoard: board, submitting: this._remoteOn() });
+    if (!this._remoteOn()) return;
+    this._pushRemoteScore(entry).then(ok => {
+      this.setState({ submitting: false, boardOffline: !ok });
+      if (ok) this._refreshBoard();
+    });
   }
   toggleSfx() { this.setState(s => ({ sfxOn: !s.sfxOn })); }
   toggleBgm() {
@@ -732,7 +809,10 @@ class Component extends DCLogic {
     const timeLeft = Math.max(0, Math.round(this.shiftLength - s.elapsed));
     const queueRest = s.customers.slice(1).map(c => ({ recipe: this.recipes[c.drinkKey], sprite: c.sprite, spriteUrl: this._u(c.sprite), drinkUrl: this._u(this.recipes[c.drinkKey].img), face: faceFor(c.patience), barColor: barColorFor(c.patience), pct: Math.round(c.patience) }));
 
-    const saved = s.savedBoard || this._loadScores();
+    // The shared board already contains this phone's past submissions, so when
+    // it loads it replaces the local list rather than being merged into it.
+    const localScores = s.savedBoard || this._loadScores();
+    const saved = s.remoteBoard || localScores;
     let board = saved.map(r => ({ ...r, isPlayer: false }));
     if (!s.boardOnly && !s.submitted) board = [...board, { name: s.initials || 'YOU', score: s.score, streak: s.maxStreak, isPlayer: true }];
     board.sort((a, b) => b.score - a.score);
@@ -782,6 +862,12 @@ class Component extends DCLogic {
       board, hasBoard: board.length > 0, emptyBoard: board.length === 0,
       showInitialsForm: !s.boardOnly && !s.submitted,
       initials: s.initials, onInitialsChange: e => this.setInitials(e.target.value), submitScore: () => this.submitScore(),
+      submitLabel: s.submitting ? 'Saving…' : 'Save Score',
+      boardScopeLabel: !this._remoteOn() ? 'This phone only'
+        : s.boardLoading ? 'Loading cafe board…'
+        : s.remoteBoard ? '☕ Cafe leaderboard — everyone who plays'
+        : 'Offline — showing this phone only',
+      boardScopeColor: (this._remoteOn() && !s.remoteBoard && !s.boardLoading) ? '#FF9AA8' : '#A8788F',
       playAgain: () => this.playAgain(),
 
       toast: s.toast, toastText: s.toast ? s.toast.text : '', toastBg: s.toast ? (s.toast.type === 'success' ? '#E68457' : s.toast.type === 'event' ? '#5E244E' : '#AA1C41') : 'transparent',
